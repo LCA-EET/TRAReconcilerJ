@@ -4,8 +4,8 @@ import java.util.List;
 
 public class FileProcessor {
     private final Path _traPath, _modPath;
-    private boolean _tphMode;
-    private Hashtable<Path, TRAFile> _traFiles;
+    private final boolean _tphMode;
+    private final Hashtable<String, TRAFile> _traFiles;
     private TRAFile _lastProcessed;
 
     public FileProcessor(String modPath, String traPath, boolean tphMode){
@@ -22,14 +22,15 @@ public class FileProcessor {
     }
     private void ProcessTRAFile(Path traFilePath){
         _lastProcessed = new TRAFile(traFilePath);
-        _traFiles.put(traFilePath.getFileName(), _lastProcessed);
+        //Common.PrintDebug("TRAGFN: " + Common.File_NoExtension(traFilePath));
+        _traFiles.put(Common.File_NoExtension(traFilePath), _lastProcessed);
     }
     private void ProcessTPH(){
         ProcessTRAFile(_traPath);
         ProcessComponentFiles(".tph");
         ProcessComponentFiles(".tp2");
         System.out.println(("Writing reconciled TRA..."));
-        //_lastProcessed.WriteTRAFile();
+        _lastProcessed.WriteTRAFile();
     }
     private void ProcessNonTPH(){
         ProcessTRAFiles();
@@ -37,7 +38,7 @@ public class FileProcessor {
         ProcessComponentFiles(".d");
         System.out.println(("Writing reconciled TRAs..."));
         for(TRAFile traFile : _traFiles.values()){
-            //traFile.WriteTRAFile();
+            traFile.WriteTRAFile();
         }
     }
     private void ProcessTRAFiles(){
@@ -49,18 +50,16 @@ public class FileProcessor {
         } catch (Exception ex){
 
         }
-
     }
     private void ProcessComponentFiles(String extension){
         try {
             List<String> files = Common.FindFiles(_modPath, extension);
             for(int i = 0; i < files.size(); i++){
                 String stringPath = files.get(i);
-                Path fileName = Path.of(stringPath).getFileName();
-                System.out.println("Processing component file: " + stringPath);
+                String fileID = Common.File_NoExtension(Path.of(stringPath));
                 if(!_tphMode){
-                    if(_traFiles.contains(fileName)){
-                        ComponentFile cf = new ComponentFile(stringPath, _traFiles.get(fileName));
+                    if(_traFiles.containsKey(fileID)){
+                        ComponentFile cf = new ComponentFile(stringPath, _traFiles.get(fileID));
                     }
                 }
                 else{

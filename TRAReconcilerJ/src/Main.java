@@ -5,6 +5,7 @@ public class Main {
     private static BufferedReader _br;
     public static void main(String[] args){
         Common.CompilePattern();
+        Common.debug = true;
         System.out.println("WARNING: It is highly recommended that you " +
                 "backup your translation files before running this program.");
 

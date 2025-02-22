@@ -1,3 +1,4 @@
+import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 
 public class ComponentFile {
@@ -6,16 +7,22 @@ public class ComponentFile {
     public ComponentFile(String path, TRAFile associatedTRA){
         _associatedTRA = associatedTRA;
         if(Common.FileExists(path)){
+            Common.PrintDebug("Path exists: " + path);
             ReadComponentFile(path);
         }
     }
     private void ReadComponentFile(String path){
         String fileText = Common.ReadText(path);
         Matcher matcher = Common.rx.matcher(fileText);
-        while(matcher.find()){
-            int usedReference = Integer.parseInt(matcher.group(1).substring(1));
-            _associatedTRA.AddUsedReference(usedReference);
+        Object[] results = matcher.results().toArray();
+        if(results.length > 0){
+            for(int i = 0; i < results.length; i++){
+                MatchResult result = (MatchResult) results[i];
+                int referenceID = Integer.parseInt(fileText.substring(result.start() + 1, result.end()));
+                _associatedTRA.AddUsedReference(referenceID);
+            }
         }
+
     }
 
 }

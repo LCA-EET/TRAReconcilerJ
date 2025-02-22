@@ -1,9 +1,7 @@
 public class TRAReference {
-    private String _referenceText;
-    private Integer _referenceID;
+    private final String _referenceText;
 
-    public TRAReference(Integer referenceID, String referenceText){
-        _referenceID = referenceID;
+    public TRAReference(String referenceText){
         _referenceText = referenceText;
     }
 

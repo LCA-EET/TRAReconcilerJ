@@ -8,6 +8,8 @@ import java.util.stream.Stream;
 
 public class Common {
 
+    public static boolean debug = false;
+
     public static Pattern rx;
 
     public static void CompilePattern(){
@@ -42,6 +44,16 @@ public class Common {
         }
     }
 
+    public static void PrintDebug(String message){
+        if(debug){
+            System.out.println(message);
+        }
+    }
+    public static String File_NoExtension(Path filePath){
+        String toReturn = filePath.getFileName().toString();
+        toReturn = toReturn.split("\\.")[0];
+        return toReturn;
+    }
     public static List<String> FindFiles(Path path, String fileExtension)
             throws IOException {
 
