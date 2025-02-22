@@ -9,8 +9,8 @@ public class TRAFile {
     private Hashtable<Integer, TRAReference> _references;
     private Path _filePath;
 
-    public TRAFile(String path){
-        _filePath = Path.of(path);
+    public TRAFile(Path path){
+        _filePath = path;
         _usedReferences = new HashSet<>();
         _references = new Hashtable<>();
         if(Common.FileExists(_filePath)){
@@ -26,7 +26,8 @@ public class TRAFile {
                 MatchResult result = matcher.toMatchResult();
                 String match = result.group(1);
                 int referenceID = Integer.parseInt(match.substring(1));
-                System.out.println(referenceID);
+                int equalsIndex = content.indexOf("=",matcher.end());
+                System.out.println("RefID: " + referenceID + ", EI: " + equalsIndex);
             }
         } catch (Exception e){
             e.printStackTrace();
