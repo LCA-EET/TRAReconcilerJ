@@ -47,7 +47,7 @@ public class TRAFile {
     }
 
     public void AddUsedReference(int referenceID){
-        System.out.println("Adding used reference: " + referenceID);
+        //System.out.println("Adding used reference: " + referenceID);
         _usedReferences.add(referenceID);
     }
 
