@@ -22,7 +22,6 @@ public class FileProcessor {
     }
     private void ProcessTRAFile(Path traFilePath){
         _lastProcessed = new TRAFile(traFilePath);
-        //Common.PrintDebug("TRAGFN: " + Common.File_NoExtension(traFilePath));
         _traFiles.put(Common.File_NoExtension(traFilePath), _lastProcessed);
     }
     private void ProcessTPH(){
@@ -42,10 +41,9 @@ public class FileProcessor {
         }
     }
     private void ProcessTRAFiles(){
-        try{
-            List<String> traFiles = Common.FindFiles(_traPath, ".tra");
-            for(int i = 0; i < traFiles.size(); i++){
-                ProcessTRAFile(Path.of(traFiles.get(i)));
+        try {
+            for(String traFile : Common.FindFiles(_traPath, ".tra")) {
+                ProcessTRAFile(Path.of(traFile));
             }
         } catch (Exception ex){
 
@@ -53,9 +51,7 @@ public class FileProcessor {
     }
     private void ProcessComponentFiles(String extension){
         try {
-            List<String> files = Common.FindFiles(_modPath, extension);
-            for(int i = 0; i < files.size(); i++){
-                String stringPath = files.get(i);
+            for(String stringPath : Common.FindFiles(_modPath, extension)) {
                 String fileID = Common.File_NoExtension(Path.of(stringPath));
                 if(!_tphMode){
                     if(_traFiles.containsKey(fileID)){
@@ -69,7 +65,5 @@ public class FileProcessor {
         } catch (Exception e){
 
         }
-
-
     }
 }
