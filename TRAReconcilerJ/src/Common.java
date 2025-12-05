@@ -10,11 +10,7 @@ public class Common {
 
     public static boolean debug = false;
 
-    public static Pattern rx;
-
-    public static void CompilePattern(){
-        rx = Pattern.compile("@[0-9]+", Pattern.CASE_INSENSITIVE);
-    }
+    public static final Pattern rx = Pattern.compile("@[0-9]+", Pattern.CASE_INSENSITIVE);
 
     public static boolean FileExists(String path){
         return FileExists(Path.of(path));
@@ -50,9 +46,8 @@ public class Common {
         }
     }
     public static String File_NoExtension(Path filePath){
-        String toReturn = filePath.getFileName().toString();
-        toReturn = toReturn.split("\\.")[0];
-        return toReturn;
+        String fileName = filePath.getFileName().toString();
+        return fileName.split("\\.")[0];
     }
     public static List<String> FindFiles(Path path, String fileExtension)
             throws IOException {
@@ -61,10 +56,8 @@ public class Common {
             throw new IllegalArgumentException("Path must be a directory!");
         }
 
-        List<String> result;
-
         try (Stream<Path> walk = Files.walk(path)) {
-            result = walk
+            return walk
                     .filter(p -> !Files.isDirectory(p))
                     // this is a path, not string,
                     // this only test if path end with a certain path
@@ -74,7 +67,5 @@ public class Common {
                     .filter(f -> f.endsWith(fileExtension))
                     .collect(Collectors.toList());
         }
-
-        return result;
     }
 }
